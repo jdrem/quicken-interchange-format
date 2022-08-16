@@ -2,6 +2,7 @@ package net.remgant.qif;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * <p>
@@ -37,24 +38,30 @@ public class Transaction {
      * The date of the transaction as a LocalDate.
      * @return date of the transaction
      */
-    public LocalDate getDate() {
-        return date;
+    public Optional<LocalDate> getDate() {
+        if (date == null)
+            return Optional.empty();
+        return Optional.of(date);
     }
 
     /**
      * The payee of the transaction
      * @return payee of the transaction
      */
-    public String getPayee() {
-        return payee;
+    public Optional<String> getPayee() {
+        if (payee == null)
+            return Optional.empty();
+        return Optional.of(payee);
     }
 
     /**
      * The amount of the transaction as a BigDecimal. Positive is a credit, negative is a debit.
      * @return amount of the transaction
      */
-    public BigDecimal getAmount() {
-        return amount;
+    public Optional<BigDecimal> getAmount() {
+        if (amount == null)
+            return Optional.empty();
+        return Optional.of(amount);
     }
 
     /**

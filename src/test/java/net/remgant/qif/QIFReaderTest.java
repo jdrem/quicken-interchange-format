@@ -15,9 +15,9 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QIFReaderTest {
     @Test
@@ -35,7 +35,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(LocalDate.of(2022, 1, 16), transaction.getDate());
+        assertEquals(Optional.of(LocalDate.of(2022, 1, 16)), transaction.getDate());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(LocalDate.of(2022, 1, 16), transaction.getDate());
+        assertEquals(Optional.of(LocalDate.of(2022, 1, 16)), transaction.getDate());
     }
 
     @Test
@@ -71,7 +71,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(LocalDate.of(1999, 1, 16), transaction.getDate());
+        assertEquals(Optional.of(LocalDate.of(1999, 1, 16)), transaction.getDate());
     }
 
     @Test
@@ -89,7 +89,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(LocalDate.of(2022, 1, 2), transaction.getDate());
+        assertEquals(Optional.of(LocalDate.of(2022, 1, 2)), transaction.getDate());
     }
 
     @Test
@@ -108,7 +108,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(LocalDate.of(2022, 1, 16), transaction.getDate());
+        assertEquals(Optional.of(LocalDate.of(2022, 1, 16)), transaction.getDate());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(new BigDecimal(123), transaction.getAmount());
+        assertEquals(Optional.of(new BigDecimal(123)), transaction.getAmount());
     }
 
     @Test
@@ -144,7 +144,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(new BigDecimal(123), transaction.getAmount());
+        assertEquals(Optional.of(new BigDecimal(123)), transaction.getAmount());
     }
 
     @Test
@@ -162,7 +162,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(new BigDecimal("123.45"), transaction.getAmount());
+        assertEquals(Optional.of(new BigDecimal("123.45")), transaction.getAmount());
     }
 
     @Test
@@ -180,7 +180,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(new BigDecimal("1234567.89"), transaction.getAmount());
+        assertEquals(Optional.of(new BigDecimal("1234567.89")), transaction.getAmount());
     }
 
     @Test
@@ -198,7 +198,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals(new BigDecimal("-123.45"), transaction.getAmount());
+        assertEquals(Optional.of(new BigDecimal("-123.45")), transaction.getAmount());
     }
 
     @Test
@@ -216,7 +216,7 @@ public class QIFReaderTest {
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
-        assertEquals("Payee", transaction.getPayee());
+        assertEquals(Optional.of("Payee"), transaction.getPayee());
     }
 
     @Test
@@ -256,6 +256,22 @@ public class QIFReaderTest {
                         "^\n");
         QIFReader reader = new QIFReader();
         Assertions.assertThrows(DateTimeException.class, () -> reader.readTransactions(stringReader));
+    }
+
+    @Test
+    public void testEmptyOptionals() throws IOException {
+        StringReader stringReader = new StringReader(
+                "!Type:Bank\n" +
+                        "^\n");
+        QIFReader reader = new QIFReader();
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
+        assertEquals(1, list.size());
+        assertNotNull(list.get(0));
+        Transaction transaction = list.get(0);
+        assertFalse(transaction.getDate().isPresent());
+        assertFalse(transaction.getPayee().isPresent());
+        assertFalse(transaction.getAmount().isPresent());
     }
 
     @Test
