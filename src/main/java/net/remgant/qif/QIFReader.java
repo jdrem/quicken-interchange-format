@@ -11,7 +11,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -22,20 +21,20 @@ public class QIFReader {
     final private ThreadLocal<NumberFormat> numberFormat = ThreadLocal.withInitial(() -> NumberFormat.getNumberInstance(Locale.US));
 
     protected FileSystem fileSystem = FileSystems.getDefault();
-    public List<Transaction> readTransactions(String fileName) throws IOException {
+    public TransactionList readTransactions(String fileName) throws IOException {
         Path path = fileSystem.getPath(fileName);
         BufferedReader bufferedReader = Files.newBufferedReader(path);
 
         return readTransactions(bufferedReader);
     }
-    public List<Transaction> readTransactions(java.io.Reader reader) throws IOException {
+    public TransactionList readTransactions(java.io.Reader reader) throws IOException {
         BufferedReader bufferedReader;
         if (reader instanceof BufferedReader)
             bufferedReader = (BufferedReader)reader;
         else
             bufferedReader = new BufferedReader(reader);
         List<Transaction> list = new LinkedList<>();
-        String fileType;
+        String fileType = "";
         String line = bufferedReader.readLine();
         Transaction.Builder builder = new Transaction.Builder();
         while (line != null) {
@@ -79,7 +78,7 @@ public class QIFReader {
             }
             line = bufferedReader.readLine();
         }
-        return Collections.unmodifiableList(list);
+        return new TransactionList(fileType, list.toArray(new Transaction[0]));
     }
 
     final private Pattern datePattern = Pattern.compile("(\\d{1,2})/(\\d{1,2})[/'](\\d{1,4})");

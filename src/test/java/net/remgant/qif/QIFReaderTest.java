@@ -15,7 +15,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,7 +30,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -48,7 +48,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -65,7 +66,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -82,7 +84,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -100,7 +103,8 @@ public class QIFReaderTest {
                         "^\n");
         QIFReader reader = new QIFReader();
 
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -117,7 +121,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -134,7 +139,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -151,7 +157,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -168,7 +175,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -185,7 +193,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -202,7 +211,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(1, list.size());
         assertNotNull(list.get(0));
         Transaction transaction = list.get(0);
@@ -286,7 +296,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "^\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(4, list.size());
         System.out.println(list);
     }
@@ -316,7 +327,8 @@ public class QIFReaderTest {
                         "C*\n" +
                         "\n");
         QIFReader reader = new QIFReader();
-        List<Transaction> list = reader.readTransactions(stringReader);
+        TransactionList list = reader.readTransactions(stringReader);
+        assertEquals("Bank", list.getType());
         assertEquals(4, list.size());
         System.out.println(list);
     }
@@ -349,7 +361,8 @@ public class QIFReaderTest {
                 "C*\n" +
                 "^\n").getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
         TestQIFReader qifReader = new TestQIFReader(fileSystem);
-        List<Transaction> list = qifReader.readTransactions("/data/test.qif");
+        TransactionList list = qifReader.readTransactions("/data/test.qif");
+        assertEquals("Bank", list.getType());
         assertEquals(4, list.size());
     }
 
